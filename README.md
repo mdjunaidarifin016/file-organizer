@@ -6,11 +6,13 @@ A Python command-line application that automatically organizes files into folder
 
 - Organizes files according to their extensions.
 - Automatically creates category folders.
-- Supports files inside subfolders and nested folders.
+- Recursively scans files inside subfolders and nested folders.
 - Handles duplicate filenames without overwriting existing files.
+- Prevents already-organized files from being renamed again.
 - Places unknown file types into an `Others` folder.
 - Includes error handling for file and directory operations.
 - Uses a separate Python module for extension mappings.
+- Uses abstraction to keep file-moving logic reusable.
 - Interactive command-line interface.
 
 ## Technologies Used
