@@ -2,16 +2,16 @@ import os
 import shutil
 import directory_find
 
-def file_move(src,directoy,folder):
+def file_move(src,directory,folder):
     file_name=os.path.basename(src)
-    destination_path=os.path.join(directoy,folder)
+    destination_path=os.path.join(directory,folder)
     try:
         os.makedirs(destination_path,exist_ok=True)
     except PermissionError:
         print("Permission not granted while creating folder")
         return
     except OSError as o:
-        print(f"Somehting went wrong while creating folder:{o}")
+        print(f"Something went wrong while creating folder: {o}")
         return
     name,ext=os.path.splitext(file_name)
     final_file=os.path.join(destination_path,file_name)
@@ -29,11 +29,11 @@ def file_move(src,directoy,folder):
     except PermissionError:
         print("Permission not granted")
     except OSError as o:
-        print(f"Something went wrong while moving file{o}")
+        print(f"Something went wrong while moving file: {o}")
 
 running=True
 while running:
-    directory_path=input("Enter the direcory:")
+    directory_path=input("Enter the directory:")
     if os.path.isdir(directory_path):
         try:
             file_folder_list=os.listdir(directory_path)
@@ -41,10 +41,10 @@ while running:
             print("Permission not granted")
             continue
         except OSError as o:
-            print(f"Someting went wrong:{o}")
+            print(f"Something went wrong: {o}")
             continue
     else:
-        print("directory doesnt exist of this is not directory")
+        print("Directory doesn't exist or this is not a directory")
         continue
     if not file_folder_list :
         print("folder is empty")
@@ -57,7 +57,17 @@ while running:
                 folder_name=directory_find.directory_finder.get(ext.lower(),"Others")
                 file_move(full_path,directory_path,folder_name)
             elif os.path.isdir(full_path):
-                print(f"{item} is a folder")
+                all_files=[]
+                for root,dirs,files in os.walk(full_path):
+                    for file in files:
+                        file_path=os.path.join(root,file)
+                        all_files.append(file_path)
+                for file in all_files:
+                    file_name=os.path.basename(file)
+                    _,ext=os.path.splitext(file_name)
+                    folder_name=directory_find.directory_finder.get(ext.lower(),"Others")
+                    file_move(file,directory_path,folder_name)
+
 
     while True:
         print("1.Continue")
